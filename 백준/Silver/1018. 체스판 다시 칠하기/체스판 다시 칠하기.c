@@ -16,7 +16,10 @@ int main(){
             int count = 0;
             for(int s_i = i; s_i < i + 8; s_i++){
                 for(int s_j = j; s_j < j + 8; s_j++){
-                    count += (s_i + s_j) % 2 == 1 ^ array[s_i][s_j] == 'B'; // 다시 칠해야할 칸이 있으면 카운트
+                    count += (s_i + s_j) % 2 == 1 ^ array[s_i][s_j] == 'B'; 
+                    // 다시 칠해야할 칸이 있으면 카운트
+                    //xor사용, 블랙자리에 블랙이 아닌것이 있거나
+                    //블랙이 블랙자리에 있지 않은경우 카운트+1
                 }
             }
             count = 64 - count < count ? 64 - count : count; // 32보다 크면 흰색과 검정색 기준을 바꾸면 다시 칠해야할 칸이 더 적아진다.
