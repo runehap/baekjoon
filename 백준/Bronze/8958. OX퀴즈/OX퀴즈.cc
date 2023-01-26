@@ -19,14 +19,13 @@ int main() {
 		{
 			if (a[i] == 'O')
 			{
+				cnt += count;
 				if (a[i + 1] == 'O')
 				{
-					cnt += count;
 					count++;
 				}
 				else
 				{
-					cnt += count;
 					count = 1;
 				}
 			}
