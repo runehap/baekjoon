@@ -25,12 +25,13 @@ void recu(int x, int y, int s)
 		ans[arr[x][y]]++;//색종이 개수 +1
 	else
 	{
-		int new_size = s / 2;
-		for (int i = 0; i < 2; i++)
+		int new_size = s / 2; //탐색할 색종이의 크키를 4개로 나눈다
+		for (int i = 0; i < 2; i++)//나눠진 4개의 색종이를 순서대로 탐색
 		{
 			for (int j = 0; j < 2; j++)
 			{
 				recu(x + i * new_size, y + j * new_size, new_size);
+				//해당 색종이의 가장 왼쪽 위 좌표와 현재 탐색한는 색종이의 크기로 함수 재귀
 			}
 			
 		}
@@ -41,18 +42,18 @@ void recu(int x, int y, int s)
 
 
 int main() {
-	int a;
+	int a;//사이즈
 	cin >> a;
-	for (int i = 0; i < a; i++)
+	for (int i = 0; i < a; i++) // 입력
 	{
 		for (int j = 0; j < a; j++)
 		{
 			cin >> arr[i][j];
 		}
 	}
-	recu(0, 0, a);
-	cout << ans[0] << endl;
-	cout << ans[1] << endl;
+	recu(0, 0, a);//첫 색종이의 가장 왼쪽위 좌표는 0,0이다.
+	cout << ans[0] << endl;//흰색종이 개수 출력
+	cout << ans[1] << endl;//파란색종이 개수 출력
 
 	
 	return 0;
