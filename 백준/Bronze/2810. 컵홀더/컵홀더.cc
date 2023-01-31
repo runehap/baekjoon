@@ -3,8 +3,8 @@
 using namespace std;
 
 int main() {
-	double c=0;
-	bool shap = false;
+	int c=0;
+	bool cub = false;
 	int a;
 	string b;
 	cin >> a >> b;
@@ -13,11 +13,12 @@ int main() {
 		if (b[i] == 'S') c++;
 		else
 		{
-			shap = true;
-			c += 0.5;
+			cub = true;
+			c += 1;
+			i++;
 		}
 	}
-	if (shap) cout << (int)c + 1;
+	if (cub) cout << (int)c + 1;
 	else cout << (int)c;
 
 	return 0;
