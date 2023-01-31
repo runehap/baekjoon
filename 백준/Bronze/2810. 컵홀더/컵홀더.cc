@@ -3,38 +3,22 @@
 using namespace std;
 
 int main() {
-	int a,cub = 0,loca=0;
-	
+	double c=0;
+	bool shap = false;
+	int a;
 	string b;
 	cin >> a >> b;
-	
-
 	for (int i = 0; i < b.length(); i++)
 	{
-		if (b[i] == 'L' && b[i + 1] == 'L')
-		{
-			if (loca == 0)
-			{
-				cub += 2;
-			}
-			else
-			{
-				cub++;
-			}
-			i++;
-			loca = 1;
-
-		}
+		if (b[i] == 'S') c++;
 		else
 		{
-			cub++;
+			shap = true;
+			c += 0.5;
 		}
-
 	}
-	cout << cub;
-
-
-		
+	if (shap) cout << (int)c + 1;
+	else cout << (int)c;
 
 	return 0;
 }
