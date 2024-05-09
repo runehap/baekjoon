@@ -1,69 +1,64 @@
-#import <stdio.h>
-#import <vector>
-#import <algorithm>
-#define NMAX 200010
+#include <iostream>
+#include <vector>
+
 using namespace std;
- 
-int N, K, a, b;
-vector< int > graph[NMAX];
- 
-int check[NMAX];
-vector< int > tree[NMAX];
- 
-int ret;
-int dist[NMAX];
- 
-void make_tree(int idx) {
-    for(int child:graph[idx]) {
-        if(check[child]) continue;
- 
-        check[child] = 1;
-        tree[idx].push_back(child);
- 
-        make_tree(child);
+
+vector<int> v[200001];
+int check[200001] = {0,};
+vector<int> tree[200001];
+int OilStation[200001];
+int n,m;
+int cnt = 0;
+
+
+int dfs(int z ,int num)
+{
+    int dis = 1,Extradis = 1;
+    for(auto i:v[z])
+    {
+        if( i == num) continue;
+
+        int d=dfs(i,z);
+        if(d > dis)
+        {
+            Extradis =  dis;
+            dis = d;
+        }
+        else{
+            Extradis = Extradis > d ? Extradis : d;
+        }
+        
     }
+
+    if(dis+Extradis >= m+2)
+    {
+        cnt++;
+        return 1;
+    }
+    else{
+        return dis+1;
+    }
+
+
 }
- 
-void dfs(int cur) {
-    int cnt=0;
-    vector< int > chd;
- 
-    for(int child:tree[cur]) {
-        dfs(child);
- 
-        dist[cur] = max( dist[cur], dist[child]+1 );
-        chd.push_back(dist[child]);
+
+int main(){
+ios_base::sync_with_stdio(0);
+cin.tie(0);
+    
+    cin >> n >> m;
+    for(int i=0;i<n-1;i++)
+    {
+        int a,b;
+        cin >> a >> b;
+        v[a].push_back(b);
+        v[b].push_back(a);
     }
+
+
+    dfs(1,0);
+
+    cout << cnt;
  
-    sort(chd.rbegin(), chd.rend());
- 
-    if(chd.size() > 1) cnt = max( cnt, (chd[0]+1)+(chd[1]+1) );
-    else if(chd.size() == 1) cnt = max( cnt, chd[0]+1 );
- 
-    if(cnt >= K) {
-        ret++;
-        dist[cur] = -1;
-    }
-}
- 
-int main() {
-    // 입력
-    scanf("%d %d", &N, &K);
-    for(int i=1;i<N;i++) {
-        scanf("%d %d", &a, &b);
- 
-        graph[a].push_back(b);
-        graph[b].push_back(a);
-    }
- 
-    // 트리 만들기
-    check[1] = 1;
-    make_tree(1);
- 
-    // 체크하기
-    dfs(1);
- 
-    // 출력하기
-    printf("%d", ret);
- 
+    return 0;
 }
