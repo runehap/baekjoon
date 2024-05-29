@@ -1,79 +1,69 @@
 #include <iostream>
-#include <string>
 #include <vector>
-#include <queue>
+#include <string>
 
 using namespace std;
 
- vector<int>stack;
-
-void push(void)
+vector<int> v;
+void push()
 {
-	
-	int a;
-	cin >> a;
-	stack.insert(stack.begin(), a);
-	
+    int n;
+    cin >> n;
+    v.push_back(n);
+    return;
 }
-void top(void)
-{
-	
-	if (stack.size() == 0)
-	{
-		cout << "-1"<< endl;
-	}
-	else
-	{
-		cout << stack[0] << endl;
-	}
+void top (){
+    if(!v.empty())
+    {
+        cout << v.back() << "\n";
+    }
+    else{
+        cout << -1 << "\n";
+    }
+    return;
 }
-void size(void)
-{
-	cout << stack.size() << endl;
+void empty(){
+    if(!v.empty())
+    {
+        cout << 0 << "\n";
+    }
+    else{
+        cout << 1 << "\n";
+    }
 }
-void empty(void)
-{
-	if (stack.size() == 0)
-	{
-		cout << "1" << endl;
-	}
-	else
-	{
-		cout << "0" << endl;
-
-	}
+void size(){
+    cout << v.size() << "\n";
+    return;
 }
-void pop(void)
-{
-	if (stack.size() == 0)
-	{
-		cout << "-1" << endl;
-	}
-	else
-	{
-		cout << stack[0] << endl;
-		stack.erase(stack.begin());
-		
-	}
+void _pop(){
+    if(!v.empty())
+    {
+        cout << v.back() << "\n";
+        v.pop_back();
+    }
+    else{
+        cout << -1 << "\n";
+    }
+    return;
 }
 
-int main() {
-	
-	int a;
-	cin >> a;
-	string b;
+int main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
 
-	while (a--)
-	{
-		cin >> b;
+    int n;
+    cin >> n;
 
-		if (b == "push") push();
-		else if (b == "pop") pop();
-		else if (b == "size") size();
-		else if (b == "empty") empty();
-		else if (b == "top") top();
+    while(n--)
+    {
+        string a;
+        cin >> a;
 
-	}
+        if(a == "push")push();
+        else if(a == "top")top();
+        else if(a == "empty")empty();
+        else if(a == "size")size();
+        else if(a == "pop")_pop();
 
-	return 0;
+    }
 }
