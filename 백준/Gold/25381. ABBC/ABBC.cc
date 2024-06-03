@@ -2,51 +2,50 @@
 
 using namespace std;
 string str;
-int visited[1000001] = {0,};
-
 
 int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     int cnt=0;
-    
+    int cnt_a = 0;
+    int cnt_b = 0;
+    int cnt_allb = 0;
     cin >> str;
 
-    for(int i=0;i<str.length()-1;i++)
+    str.reserve(str.length());
+
+    for(int i=0;i<str.length();i++)
+    {
+        if(str[i] == 'B')
+        {
+          cnt_b++;
+          cnt_allb++;
+        }  
+
+        if(str[i] == 'C'&& cnt_b)
+        {
+            cnt_b--;
+            cnt++;
+        }
+
+    }
+    
+    for(int i=0;i<str.length();i++)
     {
 
-        if(str[i] == 'B' && !visited[i])
+        if(str[i] == 'A')
         {
-          for(int j=i;j<str.length();j++)
-         {
-            if(str[j] == 'C' && !visited[j])
-            {
-                visited[i] = 1;
-                visited[j] = 1;
-                cnt++;
-                break;
-            }
-        }  
-        }
-    }
-    for(int i=0;i<str.length()-1;i++)
-    {
+            cnt_a++;
+        } 
 
-        if(str[i] == 'A' && !visited[i])
+        if(str[i] == 'B' && cnt_a)
         {
-          for(int j=i;j<str.length();j++)
-         {
-            if(str[j] == 'B' && !visited[j])
-            {
-                visited[i] = 1;
-                visited[j] = 1;
-                cnt++;
-                break;
-            }
-        }  
+            cnt_a--;
+            cnt++;
         }
     }
-    cout << cnt;
+    
+    cout << min(cnt,cnt_allb);
 
     return 0;
 }
