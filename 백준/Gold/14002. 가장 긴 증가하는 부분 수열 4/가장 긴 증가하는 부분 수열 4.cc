@@ -3,7 +3,6 @@
 using namespace std;
 int arr[1002];
 int dp[1002];
-int q[1002];
 stack<int> result;
 
 int main(){
@@ -23,8 +22,7 @@ int main(){
             {
                 if(dp[i] <= dp[j])
                 {
-                    dp[i] = dp[j]+1;
-                    q[i] = j;   
+                    dp[i] = dp[j]+1;  
                 }
             }
             Max = max(dp[i], Max);
