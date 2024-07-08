@@ -36,8 +36,7 @@ int main() {
 		int x = dq.front();
 		dq.pop_front();
 		dq.push_back(x);
-	}
-	//cout << "Min Vale : " << minV << endl;
+    }
 
 	int Answer = 0;
 	for (int i = 1111; i <= minV; i++) {
