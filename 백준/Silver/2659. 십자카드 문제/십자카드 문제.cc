@@ -2,47 +2,54 @@
 
 using namespace std;
 
-int isCircleNum(int num) {
-	int temp = num;
-	for (int i = 0; i < 3; i++) {
-		num = num % 1000 * 10 + num / 1000;
-		if (temp > num) temp = num;
+int	cross_num[10000];
+
+
+int cross_min(int a){
+	int Min = a;
+	for(int i=0;i<4;i++){
+		a = a%1000 * 10 + a/1000;
+		Min = min(Min,a);
 	}
-	return temp;
+	return Min;
 }
 
+int main(){
+ios_base::sync_with_stdio(0);
+cin.tie(0);
 
-int main() {
-	ios::sync_with_stdio(false);
-	cin.tie(NULL); cout.tie(NULL);
-	
-	deque<int> dq;
-	for (int i = 1; i <= 4; i++) {
-		int x; cin >> x;
-		dq.push_back(x);
-	}
-
-	int minV = 1e9;
-	for (int i = 1; i <= 4; i++) {
-		int val = 0; int s = 3;
-		for (int j = 0; j < dq.size(); j++) {
-			int data = dq.front();
-			dq.pop_front();
-			val += (data * (int)pow(10, s));
-			s--;
-			dq.push_back(data);
+for(int i = 1;i<10;i++){
+	for(int j=1;j<10;j++){
+		for(int k = 1;k<10;k++){
+			for(int n = 1;n<10;n++)
+			{
+				int num = i*1000 + j * 100 + k*10 + n; 
+				if (!cross_num[cross_min(num)]){
+					cross_num[cross_min(num)] = 1;
+				}
+			}
 		}
-		minV = min(minV, val);
-		int x = dq.front();
-		dq.pop_front();
-		dq.push_back(x);
-    }
-
-	int Answer = 0;
-	for (int i = 1111; i <= minV; i++) {
-		if (isCircleNum(i) == i) Answer++;
 	}
-	cout << Answer << endl;
+}
 
-	return 0;
+int st=0;
+int b = 1000;
+for(int i = 0;i < 4;i++){
+	int a;
+	cin >> a;
+	st += a*b;
+	b/=10;
+}
+
+int result = 0;
+
+for(int i=1111;i<=cross_min(st);i++){
+	if(cross_num[i]){
+		result++;
+	}
+}
+
+cout << result;
+
+return 0;
 }
