@@ -1,105 +1,93 @@
-#include <iostream>
-#include <vector>
-#include <queue>
-#include <tuple>
+    #include <iostream>
+    #include <vector>
+    #include <queue>
+    #include <algorithm>
 
-using namespace std;
+    using namespace std;
 
-int map[52][52];
-int visited[52][52];
-int n, m;
+    int isDust[51][51];
+    int visited[51][51];
+    int n,m;
+    vector<pair<int,int>> block;
+    vector<pair<int,int>> lamp;
 
-int dx[4] = { 1, 0, -1, 0 };
-int dy[4] = { 0, 1, 0, -1 };
+    int dx[4] = {1, 0, -1, 0};
+    int dy[4] = {0, 1, 0, -1};
 
-vector<pair<int, int>> lamps;
+    void bfs(int startX, int startY) {
+        queue<pair<int, int>> q;
+        q.push({startX,startY});    
+        visited[startX][startY] = 16; 
 
-void bfs(vector<pair<int, int>>& blocks) {
-    queue<pair<int, int>> q;
 
-    for (auto p : blocks) {
-        q.push({p.first, p.second});
-        visited[p.first][p.second] = 15;
-    }
+        while(!q.empty()){
+            pair<int,int> cur = q.front();
+            q.pop();
 
-    while (!q.empty()) {
-        int cx = q.front().first;
-        int cy = q.front().second;
-        q.pop();
+            int cx = cur.first;
+            int cy = cur.second;    
 
-        int current_power = visited[cx][cy];
-        
-        if (current_power <= 0) continue;
+            for (int dir = 0; dir < 4; dir++)
+            {
+                int nx = cx + dx[dir];
+                int ny = cy + dy[dir];
 
-        for (int i = 0; i < 4; i++) {
-            int nx = cx + dx[i];
-            int ny = cy + dy[i];
+                if (nx < 0 || nx >= n || ny < 0 || ny >= m) continue;
 
-            if (nx < 0 || nx >= n || ny < 0 || ny >= m) continue;
-
-            int next_type = map[nx][ny];
-            
-            if (next_type == 0 || next_type == 3) continue;
-
-            int next_power = 0;
-            if (map[cx][cy] == 3) next_power = 15;
-            else next_power = current_power - 1;
-            
-            if (next_type == 2) {
-                if (visited[nx][ny] < next_power) {
-                    visited[nx][ny] = next_power;
+                if(visited[cx][cy] > 1 && find(lamp.begin(),lamp.end(),make_pair(nx,ny)) != lamp.end()){
+                    isDust [nx][ny] = 2;
+                    continue;
                 }
-                continue; 
+
+                if(!isDust[nx][ny] || visited[cx][cy] <= 1  || visited[cx][cy] <= visited[nx][ny]) continue;
+
+                visited[nx][ny] = visited[cx][cy] - 1;
+                q.push(make_pair(nx,ny));
+                
             }
+        }
+    }
 
-            if (visited[nx][ny] < next_power) {
-                visited[nx][ny] = next_power;
-                q.push({ nx, ny });
+
+    int main(){
+
+        cin >> n >> m;
+        int num;
+        cin >> num;
+
+        for(int i=0;i<num;i++){
+            string inp;
+            int x,y;
+            cin >> inp >> x >> y ;
+            if(inp == "redstone_block"){
+                block.push_back({x,y});
+            }
+            else if(inp == "redstone_lamp")
+            {
+                lamp.push_back({x,y});
+            }
+            else{
+                isDust[x][y] = 1;
             }
         }
+        
+        for(auto i : block){
+            bfs(i.first, i.second);
+        }
+        bool isSucess = true;
+        for(auto i : lamp){
+            if(isDust[i.first][i.second] != 2) isSucess = false;
+        }
+
+        // for(int i=0;i<n;i++){
+        //     for(int j=0;j<m;j++){
+        //         cout << visited[i][j];
+        //     }
+        //     cout << endl;
+        // }
+
+        if(isSucess) cout << "success";
+        else cout << "failed";
+
+        return 0;   
     }
-}
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(NULL);
-
-    cin >> n >> m;
-    int k;
-    cin >> k;
-
-    vector<pair<int, int>> blocks;
-
-    for (int i = 0; i < k; i++) {
-        string type;
-        int r, c;
-        cin >> type >> r >> c;
-
-        if (type == "redstone_block") {
-            map[r][c] = 3;
-            blocks.push_back({r, c});
-        }
-        else if (type == "redstone_dust") {
-            map[r][c] = 1;
-        }
-        else if (type == "redstone_lamp") {
-            map[r][c] = 2;
-            lamps.push_back({r, c});
-        }
-    }
-
-    bfs(blocks);
-
-    bool success = true;
-    for (auto lamp : lamps) {
-        if (visited[lamp.first][lamp.second] <= 0) {
-            success = false;
-            break;
-        }
-    }
-
-    if (success) cout << "success";
-    else cout << "failed";
-
-    return 0;
-}
